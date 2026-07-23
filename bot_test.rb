@@ -1,4 +1,5 @@
 require 'discordrb'
+require 'dotenv'
 
 Dotenv.load
 

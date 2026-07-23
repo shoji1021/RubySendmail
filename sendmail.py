@@ -108,7 +108,7 @@ with mp_holistic.Holistic(
         if now - last_check >= interval:
             if motion_detected:
                 # メール送信の代わりに、OpenCVで画像を保存する
-                cv2.imwrite('alert.jpg', frame)
+                cv2.imwrite('images/alert.jpg', frame)
                 print(" 動作を検知しました！alert.jpg として保存しました。")
             motion_detected = False  # フラグリセット
             last_check = now
