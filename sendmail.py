@@ -6,15 +6,18 @@ import mediapipe as mp
 import numpy as np
 import time  # 追加
 
+mail = input("MailAddress: ")
+apppass = input("AppPassword: ")
+
 mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
 
-sendAddress = input("送信者メールアドレス: ")
-password = input("アプリパスワード: ")
+sendAddress = mail
+password = apppass
 subject = '人物動作検出通知'
 bodyText = '人物の動作を検出しました。'
-fromAddress = sendAddress
-toAddress = sendAddress
+fromAddress = mail
+toAddress = mail
 
 def send_mail():
     smtpobj = smtplib.SMTP('smtp.gmail.com', 587)

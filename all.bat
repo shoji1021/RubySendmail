@@ -1,11 +1,11 @@
 @echo off
 
 :: RubyのBotを別ウィンドウで起動
-echo "Open Ruby"
+echo Open Ruby
 start ruby bot_test.rb
 
 :: Pythonの動体検知を別ウィンドウで起動
-echo "Open Python"
+echo Open Python
 start python sendmail.py
 
 echo.
