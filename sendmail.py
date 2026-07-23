@@ -1,40 +1,16 @@
-import smtplib
-from email.mime.text import MIMEText
-from email.utils import formatdate
+import os
 import cv2
 import mediapipe as mp
 import numpy as np
-import time  # 追加
+import time
 
-mail = input("MailAddress: ")
-apppass = input("AppPassword: ")
 
 mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
 
-sendAddress = mail
-password = apppass
-subject = '人物動作検出通知'
-bodyText = '人物の動作を検出しました。'
-fromAddress = mail
-toAddress = mail
-
-def send_mail():
-    smtpobj = smtplib.SMTP('smtp.gmail.com', 587)
-    smtpobj.starttls()
-    smtpobj.login(sendAddress, password)
-    msg = MIMEText(bodyText)
-    msg['Subject'] = subject
-    msg['From'] = fromAddress
-    msg['To'] = toAddress
-    msg['Date'] = formatdate()
-    smtpobj.send_message(msg)
-    smtpobj.close()
-
 cap = cv2.VideoCapture(0)
 
 def get_pose_vector(landmarks, shape):
-    # ランドマーク座標を1次元配列に
     h, w, _ = shape
     return np.array([[lm.x * w, lm.y * h] for lm in landmarks.landmark]).flatten()
 
@@ -47,9 +23,9 @@ with mp_holistic.Holistic(
     min_tracking_confidence=0.5
 ) as holistic:
     prev_pose = None
-    motion_detected = False  # 動作検出フラグ
+    motion_detected = False
     interval = 20  # 秒
-    last_check = time.time()  # タイマー開始
+    last_check = time.time()
 
     while True:
         ret, frame = cap.read()
@@ -98,19 +74,17 @@ with mp_holistic.Holistic(
             pose_vec = get_pose_vector(results.pose_landmarks, frame.shape)
             if prev_pose is not None:
                 diff = np.linalg.norm(pose_vec - prev_pose)
-                # 動きが大きいときフラグを立てる
-                if diff > 100:  # この値は調整してください
+                if diff > 100:
                     motion_detected = True
             prev_pose = pose_vec
 
-        # 1分ごとにチェック
+        # 定期チェック
         now = time.time()
         if now - last_check >= interval:
             if motion_detected:
-                # メール送信の代わりに、OpenCVで画像を保存する
                 cv2.imwrite('images/alert.jpg', frame)
-                print(" 動作を検知しました！alert.jpg として保存しました。")
-            motion_detected = False  # フラグリセット
+                print("動作を検知しました。alert.jpg として保存しました。")
+            motion_detected = False
             last_check = now
 
         cv2.imshow('Holistic Detection', frame)
