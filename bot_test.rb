@@ -1,7 +1,7 @@
 require 'discordrb'
 
-TOKEN = input('Bot: ')
-CHANNEL_ID = input('ID: ')
+TOKEN = 'ここにコピーした新しい本物のトークンを貼り付けます'
+CHANNEL_ID = 'ここにチャンネルIDを貼り付けます'
 
 bot = Discordrb::Commands::CommandBot.new(
   token: TOKEN,
