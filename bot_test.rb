@@ -1,7 +1,6 @@
 require 'discordrb'
 require 'dotenv'
 
-
 Dotenv.load
 
 TOKEN = ENV['DISCORD_BOT_TOKEN']
@@ -23,7 +22,10 @@ end
 bot.button(custom_id: 'sound_alarm') do |event|
   event.update_message(content: '警報（警告音）を発令しました。', components: nil)
 
-  system('powershell -c "1..20 | ForEach-Object { [console]::beep(2000, 100); Start-Sleep -Milliseconds 30 }"')
+  system('powershell -c "1..10 | ForEach-Object { [console]::beep(2000, 150); Start-Sleep -Milliseconds 80 }"')
+  system('powershell -c "1..10 | ForEach-Object { [console]::beep(2000, 150); Start-Sleep -Milliseconds 80 }"')
+  system('powershell -c "1..10 | ForEach-Object { [console]::beep(2000, 150); Start-Sleep -Milliseconds 80 }"')
+  system('powershell -c "1..10 | ForEach-Object { [console]::beep(2000, 150); Start-Sleep -Milliseconds 80 }"')
   puts "ボタン操作により警報を鳴らしました。"
 end
 
